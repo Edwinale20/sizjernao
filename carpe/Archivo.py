@@ -170,7 +170,7 @@ def figura4():
 
 figura2 = figura2()
 figura3 = figura3()
-figura3 = figura4()
+figura4 = figura4()
 
 
 # Crear columnas

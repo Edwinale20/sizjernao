@@ -145,24 +145,35 @@ def figura3():
     return fig
 
 def figura4():
-    # Leer tus datos de Google Sheets
+    # Leer los datos desde tu Google Sheet
     url = "https://docs.google.com/spreadsheets/d/1xDqEMF5egH2QwiKwmO0AH2GUewARWbFJIfFwkh2X45o/export?format=csv"
     df = pd.read_csv(url)
 
-    # Calcular el total
-    total_gasto_fijo = df["Gasto fijo"].sum()
+    # Agrupar los gastos fijos por concepto
+    gasto_fijo_por_concepto = df.groupby("Concepto")["Gasto fijo"].sum().reset_index()
+    gasto_fijo_por_concepto = gasto_fijo_por_concepto[gasto_fijo_por_concepto["Gasto fijo"] > 0]
 
-    # Crear una sola barra con el total
+    # Crear barra horizontal apilada
     fig = px.bar(
-        x=["Gastos fijos"], 
-        y=[total_gasto_fijo],
-        text=[f"${total_gasto_fijo:,.2f}"],
-        title="Gastos Fijos por Mes",
-        labels={"x": "", "y": "Monto ($)"}
+        gasto_fijo_por_concepto,
+        x="Gasto fijo",
+        y=["Gastos fijos"],  # solo una barra en el eje Y
+        color="Concepto",
+        orientation="h",
+        text="Gasto fijo",
+        title="Gastos Fijos por Mes (Detallado)",
+        labels={"Gasto fijo": "Monto ($)", "Concepto": "Concepto"},
     )
 
-    fig.update_traces(textposition="outside")
-    fig.update_layout(title_x=0.5, showlegend=False, height=300)
+    fig.update_traces(texttemplate="$%{text:,.0f}", textposition="inside")
+    fig.update_layout(
+        yaxis=dict(showticklabels=False),
+        xaxis_title="Monto Total ($)",
+        title_x=0.5,
+        height=250,
+        showlegend=True,
+        barmode="stack"
+    )
 
     return fig
 

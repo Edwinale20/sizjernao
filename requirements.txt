@@ -6,3 +6,4 @@ python-dotenv==1.0.0
 numpy==2.2.6
 requests==2.31.0
 psutil
+matplotlib==3.10.3

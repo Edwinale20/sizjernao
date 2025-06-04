@@ -153,27 +153,32 @@ def figura4():
     gasto_fijo_por_concepto = df.groupby("Concepto")["Gasto fijo"].sum().reset_index()
     gasto_fijo_por_concepto = gasto_fijo_por_concepto[gasto_fijo_por_concepto["Gasto fijo"] > 0]
 
-    # Crear gráfica de barras verticales
+    # Columna dummy para tener una sola barra vertical
+    gasto_fijo_por_concepto["Grupo"] = "Total"
+
+    # Gráfica vertical apilada (una sola columna)
     fig = px.bar(
         gasto_fijo_por_concepto,
-        x="Concepto",
+        x="Grupo",
         y="Gasto fijo",
-        text="Gasto fijo",
         color="Concepto",
+        text="Gasto fijo",
         title="Gastos Fijos por Mes (Detallado)",
         labels={"Gasto fijo": "Monto ($)", "Concepto": "Concepto"},
     )
 
-    fig.update_traces(texttemplate="$%{text:,.0f}", textposition="outside")
+    fig.update_traces(texttemplate="$%{text:,.0f}", textposition="inside")
     fig.update_layout(
-        xaxis_title="Concepto",
-        yaxis_title="Monto ($)",
+        xaxis=dict(showticklabels=False),
+        yaxis_title="Monto Total ($)",
         title_x=0.5,
         height=400,
-        showlegend=False
+        barmode="stack",
+        showlegend=True
     )
 
     return fig
+
 
 
 

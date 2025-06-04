@@ -153,11 +153,14 @@ def figura4():
     gasto_fijo_por_concepto = df.groupby("Concepto")["Gasto fijo"].sum().reset_index()
     gasto_fijo_por_concepto = gasto_fijo_por_concepto[gasto_fijo_por_concepto["Gasto fijo"] > 0]
 
-    # Crear barra horizontal apilada
+    # Agregar una columna dummy para tener una sola barra
+    gasto_fijo_por_concepto["Grupo"] = "Total"
+
+    # Crear gráfica apilada horizontal
     fig = px.bar(
         gasto_fijo_por_concepto,
         x="Gasto fijo",
-        y=["Gastos fijos"],  # solo una barra en el eje Y
+        y="Grupo",  # una sola barra
         color="Concepto",
         orientation="h",
         text="Gasto fijo",
@@ -170,12 +173,13 @@ def figura4():
         yaxis=dict(showticklabels=False),
         xaxis_title="Monto Total ($)",
         title_x=0.5,
-        height=250,
-        showlegend=True,
-        barmode="stack"
+        height=300,
+        barmode="stack",
+        showlegend=True
     )
 
     return fig
+
 
 
 

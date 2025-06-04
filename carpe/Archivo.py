@@ -144,10 +144,33 @@ def figura3():
     fig.update_layout(title_x=0.5)
     return fig
 
+def figura4():
+    # Leer tus datos de Google Sheets
+    url = "https://docs.google.com/spreadsheets/d/1xDqEMF5egH2QwiKwmO0AH2GUewARWbFJIfFwkh2X45o/export?format=csv"
+    df = pd.read_csv(url)
+
+    # Calcular el total
+    total_gasto_fijo = df["Gasto fijo"].sum()
+
+    # Crear una sola barra con el total
+    fig = px.bar(
+        x=["Gastos fijos"], 
+        y=[total_gasto_fijo],
+        text=[f"${total_gasto_fijo:,.2f}"],
+        title="Gastos Fijos por Mes",
+        labels={"x": "", "y": "Monto ($)"}
+    )
+
+    fig.update_traces(textposition="outside")
+    fig.update_layout(title_x=0.5, showlegend=False, height=300)
+
+    return fig
+
 
 
 figura2 = figura2()
 figura3 = figura3()
+figura3 = figura4()
 
 
 # Crear columnas
@@ -164,6 +187,7 @@ with c3:
     st.plotly_chart(figura3, use_container_width=True)
 
 
-c4, c2, c3 = st.columns([4, 3, 4])
-
+c4, c5, c6 = st.columns([4, 3, 4])
+with c4:
+    st.plotly_chart(figura4, use_container_width=True)
 
